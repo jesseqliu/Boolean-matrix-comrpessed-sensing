@@ -91,31 +91,6 @@ class MatrixCompletion(object):
         self.out_z = np.zeros((self.num_edges, self.K))
         self.out_z1 = np.zeros((self.num_measure,self.num_nonzero*self.K)) #gamma_hat in the paper
         
-        
-    def update_adj_list(self):
-        ''' nbM: list of indices of nonzeros organized in rows
-        nbM: list of indices of nonzeros organized in columns
-        '''
-        '''
-        Mnz,Nnz = np.nonzero(self.mask)
-        M = self.M
-        N = self.N
-        nbM = [[] for i in range(M)] 
-        nbN = [[] for i in range(N)]
-
-        for z in range(len(Mnz)):
-            nbN[Nnz[z]].append(z)
-            nbM[Mnz[z]].append(z)
-
-        for i in range(M):
-            nbM[i] = np.array(nbM[i], dtype=int)
-        for i in range(N):
-            nbN[i] = np.array(nbN[i], dtype=int)
-            
-        self.rows = nbM
-        self.cols = nbN
-        '''
-        self.record=0
     
     def run(self):
         self.init_msgs_n_marginals()
