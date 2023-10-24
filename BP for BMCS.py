@@ -30,12 +30,11 @@ class MatrixCompletion(object):
                  learning_rate = .2, #damping parameter
                   #maximum number of message passing updates
                  verbose = False,
-                 p_x_1 = .5, #the prior probability of x=1. For regularization use small or large values in [0,1]
-                 p_y_1 = .5, #the prior probability of y=1. For regularization use small or large values in [0,1]
-                 #note that when p_x and p_y are uniform the MAP assignment is not sensitive
-                 #to the following values, assuming they are the same and above .5
-                 p_1_given_1 = 0.99, #the model of the noisy channel: probability of observing 1 for the input of 1
-                 p_0_given_0 = 0.99, #similar to the above
+                 p_x_1 = .5, 
+                 p_y_1 = .5, 
+         
+                 p_1_given_1 = 0.99,
+                 p_0_given_0 = 0.99, 
                 ):
         
         assert(p_x_1 < 1 and p_x_1 > 0)
@@ -244,14 +243,12 @@ test=10
 nonzero_range=10
 px=13
 nn=10
-#dimensionality of the random input matrix
+
 M = 200
 N = 200
 #rank
 K = (i1+3)
 max_iter=200
-#information for generating a random matrix 
-#percentage of observed elements (for matrix completion)
 
 p_measure=0.005*(i+1)
 p_flip = 0
@@ -261,15 +258,14 @@ p_x_1=0.05
 p_y_1=0.05
 
 num_measure=int(p_measure*M*N)
-#generate a random instance of matrix Z = X \times Y, observed matrix O, and observation mask
+
 mat_dic = get_random_matrices(M, N, K,p_x_1 = p_x_1, p_y_1 = p_y_1, p_flip = p_flip, p_observe = p_observe, p_measure=p_measure,num_nonzero=num_nonzero)
 
-#inference method
+
 print ("running inference")
-#the input to inference is 1) the input matrix O, 2) rank K, 3) mask: a Boolean matrix indicating which values in O should be used/observed
-#for more options, e.g. the priors over X and Y, number of iterations, tolerance, see the comments for MatrixCompletion
+
 comp = MatrixCompletion(M,N,K,mat_dic['O_measure'],mat_dic['co_measure'],num_measure,num_nonzero,mat_dic['sample_co'], min_sum = True, verbose = True,p_x_1 = p_x_1, p_y_1 = p_y_1,max_iter=max_iter)
 comp.run()
 
-#printing some info now
+
 print (rec_error(comp.Z, mat_dic['Z'])
